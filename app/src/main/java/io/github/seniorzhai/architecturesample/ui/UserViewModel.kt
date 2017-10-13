@@ -9,7 +9,7 @@ import io.reactivex.functions.Action
 import io.reactivex.internal.operators.completable.CompletableFromAction
 
 class UserViewModel(private val dateSource: UserDao) : ViewModel() {
-    fun uesrName(): Flowable<String> {
+    fun userName(): Flowable<String> {
         return dateSource.getUserById(USER_ID).map { user -> user.userName }
     }
 

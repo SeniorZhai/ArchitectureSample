@@ -28,7 +28,7 @@ class UserActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        disposable.add(viewModel.uesrName().subscribeOn(Schedulers.io())
+        disposable.add(viewModel.userName().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ this.user_name.text = it }, { error ->
                     Log.e("Tag", "error")
