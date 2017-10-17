@@ -1,6 +1,7 @@
 package io.github.seniorzhai.architecturesample.ui
 
 import android.arch.lifecycle.ViewModelProviders
+import android.location.LocationManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -20,6 +21,8 @@ class UserActivity : AppCompatActivity() {
 
     @Inject
     protected lateinit var obj: Obj
+    @Inject
+    protected lateinit var locationManager: LocationManager;
 
     private val disposable = CompositeDisposable()
 
@@ -27,11 +30,14 @@ class UserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user)
         // 注入
-        DaggerUserActivityCompoent.builder().build().inject(this)
+        DaggerUserActivityCompoent
+                .builder()
+                .userModule(UserModule(this))
+                .build().inject(this)
 
         viewModelFactory = Injection.provideViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
-        button.setOnClickListener({updateUserName()})
+        button.setOnClickListener({ updateUserName() })
     }
 
     override fun onStart() {
