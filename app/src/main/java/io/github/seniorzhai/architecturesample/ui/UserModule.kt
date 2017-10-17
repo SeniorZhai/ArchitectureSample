@@ -7,9 +7,6 @@ import dagger.Provides
 import io.github.seniorzhai.architecturesample.Injection
 import io.github.seniorzhai.architecturesample.di.ActivityScope
 
-/**
- * Created by zhai on 2017/10/17.
- */
 @Module
 class UserModule(private val context: AppCompatActivity) {
     @Provides

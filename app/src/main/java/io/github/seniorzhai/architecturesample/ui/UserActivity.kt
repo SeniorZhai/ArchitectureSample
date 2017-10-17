@@ -24,7 +24,6 @@ class UserActivity : AppCompatActivity() {
                 .builder()
                 .userModule(UserModule(this))
                 .build().inject(this)
-
         button.setOnClickListener({ updateUserName() })
     }
 
