@@ -1,8 +1,6 @@
-package io.github.seniorzhai.architecturesample
+package io.github.seniorzhai.architecturesample.persistence
 
 import android.content.Context
-import io.github.seniorzhai.architecturesample.persistence.UserDao
-import io.github.seniorzhai.architecturesample.persistence.UsersDatabase
 import io.github.seniorzhai.architecturesample.ui.ViewModelFactory
 
 object Injection {

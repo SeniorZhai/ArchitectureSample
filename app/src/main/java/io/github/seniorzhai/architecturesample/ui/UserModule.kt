@@ -4,8 +4,8 @@ import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import dagger.Module
 import dagger.Provides
-import io.github.seniorzhai.architecturesample.Injection
 import io.github.seniorzhai.architecturesample.di.ActivityScope
+import io.github.seniorzhai.architecturesample.persistence.Injection
 
 @Module
 class UserModule(private val context: AppCompatActivity) {

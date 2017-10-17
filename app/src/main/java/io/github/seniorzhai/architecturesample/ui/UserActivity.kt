@@ -1,8 +1,10 @@
 package io.github.seniorzhai.architecturesample.ui
 
+import android.location.LocationManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import io.github.seniorzhai.architecturesample.App
 import io.github.seniorzhai.architecturesample.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -13,6 +15,8 @@ import javax.inject.Inject
 class UserActivity : AppCompatActivity() {
     @Inject
     protected lateinit var viewModel: UserViewModel
+    @Inject
+    protected lateinit var locationManager: LocationManager
 
     private val disposable = CompositeDisposable()
 
@@ -22,8 +26,10 @@ class UserActivity : AppCompatActivity() {
         // 注入
         DaggerUserActivityCompoent
                 .builder()
+                .appComponent(App.get(this).appComponent)
                 .userModule(UserModule(this))
                 .build().inject(this)
+
         button.setOnClickListener({ updateUserName() })
     }
 
