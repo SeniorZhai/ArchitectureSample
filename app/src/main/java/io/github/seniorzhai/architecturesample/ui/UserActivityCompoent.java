@@ -1,10 +1,9 @@
 package io.github.seniorzhai.architecturesample.ui;
 
-import javax.inject.Singleton;
-
 import dagger.Component;
+import io.github.seniorzhai.architecturesample.di.ActivityScope;
 
-@Singleton
+@ActivityScope
 @Component(modules = UserModule.class)
 public interface UserActivityCompoent {
     void inject(UserActivity activity);

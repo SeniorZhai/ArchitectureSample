@@ -1,12 +1,8 @@
 package io.github.seniorzhai.architecturesample.ui
 
-import android.arch.lifecycle.ViewModelProviders
-import android.location.LocationManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import io.github.seniorzhai.architecturesample.Injection
-import io.github.seniorzhai.architecturesample.Obj
 import io.github.seniorzhai.architecturesample.R
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -15,14 +11,8 @@ import kotlinx.android.synthetic.main.activity_user.*
 import javax.inject.Inject
 
 class UserActivity : AppCompatActivity() {
-    // lateinit 延迟初始化
-    private lateinit var viewModelFactory: ViewModelFactory
-    private lateinit var viewModel: UserViewModel
-
     @Inject
-    protected lateinit var obj: Obj
-    @Inject
-    protected lateinit var locationManager: LocationManager;
+    protected lateinit var viewModel: UserViewModel
 
     private val disposable = CompositeDisposable()
 
@@ -35,8 +25,6 @@ class UserActivity : AppCompatActivity() {
                 .userModule(UserModule(this))
                 .build().inject(this)
 
-        viewModelFactory = Injection.provideViewModelFactory(this)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
         button.setOnClickListener({ updateUserName() })
     }
 
