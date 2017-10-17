@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import io.github.seniorzhai.architecturesample.App
 import io.github.seniorzhai.architecturesample.R
+import io.github.seniorzhai.architecturesample.network.ApiService
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -17,6 +18,8 @@ class UserActivity : AppCompatActivity() {
     protected lateinit var viewModel: UserViewModel
     @Inject
     protected lateinit var locationManager: LocationManager
+    @Inject
+    protected lateinit var apiService: ApiService
 
     private val disposable = CompositeDisposable()
 
@@ -31,6 +34,7 @@ class UserActivity : AppCompatActivity() {
                 .build().inject(this)
 
         button.setOnClickListener({ updateUserName() })
+        button1.setOnClickListener({ http() })
     }
 
     override fun onStart() {
@@ -55,5 +59,14 @@ class UserActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ button.isEnabled = true }, { Log.e("Tag", "error") }
                 ))
+    }
+
+    private fun http() {
+        apiService.ip()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ ip ->
+                    user_name.text = ip.origin
+                })
     }
 }
