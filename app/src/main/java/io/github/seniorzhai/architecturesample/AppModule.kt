@@ -45,6 +45,6 @@ class AppModule internal constructor(private val context: Context) {
     }
 
     companion object {
-        private val ENDPOINT = "https://api.github.com/"
+        private val ENDPOINT = "https://news-at.zhihu.com/api/4/"
     }
 }

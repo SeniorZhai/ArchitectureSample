@@ -1,4 +1,4 @@
-package io.github.seniorzhai.architecturesample.ui.search
+package io.github.seniorzhai.architecturesample.ui
 
 import dagger.Component
 import io.github.seniorzhai.architecturesample.AppComponent
@@ -6,6 +6,6 @@ import io.github.seniorzhai.architecturesample.di.ActivityScope
 
 @ActivityScope
 @Component(dependencies = arrayOf(AppComponent::class))
-interface SearchFragmentCompoent {
-    fun inject(searchFragment: SearchFragment)
+interface MainFragmentCompoent {
+    fun inject(searchFragment: MainFragment)
 }
