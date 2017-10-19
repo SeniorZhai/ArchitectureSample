@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import io.github.seniorzhai.architecturesample.App
 import io.github.seniorzhai.architecturesample.R
+import io.github.seniorzhai.architecturesample.getRandomTime
 import io.github.seniorzhai.architecturesample.network.ApiService
 import io.github.seniorzhai.architecturesample.network.Story
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -34,7 +35,14 @@ class MainFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        apiService.getNews()
+        loadBn.setOnClickListener({ load() })
+        load()
+    }
+
+    private fun load() {
+        var time = getRandomTime()
+        dateTv.text = time
+        apiService.getNewsBefore(time)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
@@ -45,6 +53,8 @@ class MainFragment : Fragment() {
                         mAdapter!!.repos = result.stories
                         mAdapter!!.notifyDataSetChanged()
                     }
+                }, { e ->
+                    dateTv.text = e.message
                 })
     }
 
@@ -73,7 +83,8 @@ class MainFragment : Fragment() {
     class RepoViewHolder constructor(containerView: View) : RecyclerView.ViewHolder(containerView) {
         fun bind(story: Story) {
             itemView.full_name.text = story.title
-            Glide.with(itemView.image).load(story.images[0]).into(itemView.image)
+            if (story.images.isNotEmpty())
+                Glide.with(itemView.image).load(story.images[0]).into(itemView.image)
         }
     }
 }
