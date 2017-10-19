@@ -2,6 +2,7 @@ package io.github.seniorzhai.architecturesample
 
 import android.app.Application
 import android.content.Context
+import com.squareup.leakcanary.LeakCanary
 
 class App : Application() {
     var appComponent: AppComponent? = null
@@ -13,6 +14,8 @@ class App : Application() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
+        if (LeakCanary.isInAnalyzerProcess(this)) return
+        LeakCanary.install(this)
     }
 
     companion object {
