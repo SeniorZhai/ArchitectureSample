@@ -5,7 +5,7 @@ import io.github.seniorzhai.architecturesample.AppComponent
 import io.github.seniorzhai.architecturesample.di.ActivityScope
 
 @ActivityScope
-@Component(dependencies = arrayOf(AppComponent::class))
-interface MainFragmentCompoent {
+@Component(modules = arrayOf(MainFragmentModules::class), dependencies = arrayOf(AppComponent::class))
+interface MainFragmentComponent {
     fun inject(searchFragment: MainFragment)
 }

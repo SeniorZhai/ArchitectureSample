@@ -1,5 +1,6 @@
 package io.github.seniorzhai.architecturesample.ui
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
@@ -23,11 +24,19 @@ class MainFragment : Fragment() {
     @Inject
     protected lateinit var apiService: ApiService
 
-    private var mAdapter: DataAdapter? = null
+    @Inject
+    protected lateinit var viewModel: MainFragmentViewModel
+
+    private var mAdapter: DataAdapter = DataAdapter(null)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        DaggerMainFragmentCompoent.builder().appComponent(App[activity].appComponent).build().inject(this)
+        DaggerMainFragmentComponent
+                .builder()
+                .appComponent(App[activity].appComponent)
+                .mainFragmentModules(MainFragmentModules(activity))
+                .build()
+                .inject(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -37,6 +46,14 @@ class MainFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         loadBn.setOnClickListener({ load() })
         load()
+        recyclerView.adapter = mAdapter
+
+        viewModel.storyList.observe(this, Observer { it ->
+            if (it != null) {
+                mAdapter.repos = it
+                mAdapter.notifyDataSetChanged()
+            }
+        })
     }
 
     private fun load() {
@@ -46,13 +63,7 @@ class MainFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ result ->
-                    if (mAdapter == null) {
-                        mAdapter = DataAdapter(result.stories)
-                        recyclerView.adapter = mAdapter
-                    } else {
-                        mAdapter!!.repos = result.stories
-                        mAdapter!!.notifyDataSetChanged()
-                    }
+                    viewModel.setStoryList(result.stories)
                 }, { e ->
                     dateTv.text = e.message
                 })
