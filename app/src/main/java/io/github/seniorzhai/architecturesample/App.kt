@@ -2,6 +2,7 @@ package io.github.seniorzhai.architecturesample
 
 import android.app.Application
 import android.content.Context
+import com.facebook.stetho.Stetho
 import com.squareup.leakcanary.LeakCanary
 
 class App : Application() {
@@ -16,6 +17,7 @@ class App : Application() {
                 .build()
         if (LeakCanary.isInAnalyzerProcess(this)) return
         LeakCanary.install(this)
+        Stetho.initializeWithDefaults(this)
     }
 
     companion object {

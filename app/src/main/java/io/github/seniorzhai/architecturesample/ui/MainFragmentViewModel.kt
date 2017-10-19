@@ -3,10 +3,8 @@ package io.github.seniorzhai.architecturesample.ui
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.support.annotation.MainThread
-import io.github.seniorzhai.architecturesample.di.ActivityScope
 import io.github.seniorzhai.architecturesample.network.Story
 
-@ActivityScope
 class MainFragmentViewModel : ViewModel() {
 
     var storyList: MutableLiveData<List<Story>> = MutableLiveData()

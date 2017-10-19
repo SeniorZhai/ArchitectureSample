@@ -1,7 +1,9 @@
 package io.github.seniorzhai.architecturesample.ui
 
 import android.arch.lifecycle.Observer
+import android.arch.persistence.room.Room
 import android.os.Bundle
+import android.support.annotation.WorkerThread
 import android.support.v4.app.Fragment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,9 +12,12 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import io.github.seniorzhai.architecturesample.App
 import io.github.seniorzhai.architecturesample.R
+import io.github.seniorzhai.architecturesample.db.DbStory
+import io.github.seniorzhai.architecturesample.db.ZhihuDb
 import io.github.seniorzhai.architecturesample.getRandomTime
 import io.github.seniorzhai.architecturesample.network.ApiService
 import io.github.seniorzhai.architecturesample.network.Story
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -20,6 +25,9 @@ import kotlinx.android.synthetic.main.item_story.view.*
 import javax.inject.Inject
 
 class MainFragment : Fragment() {
+
+    //    @Inject
+    protected lateinit var zhihuDb: ZhihuDb
 
     @Inject
     protected lateinit var apiService: ApiService
@@ -37,6 +45,18 @@ class MainFragment : Fragment() {
                 .mainFragmentModules(MainFragmentModules(activity))
                 .build()
                 .inject(this)
+        zhihuDb = Room.databaseBuilder(context, ZhihuDb::class.java!!, "zhihu.db").build()
+        doWo()
+    }
+
+    @WorkerThread
+    fun doWo() {
+        Observable.just(DbStory(Story(emptyArray(), 213, "aaa")))
+                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.computation())
+                .subscribe({
+                    zhihuDb.storyDao().insertStory(it)
+                })
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
