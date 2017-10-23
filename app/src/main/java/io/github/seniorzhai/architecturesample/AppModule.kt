@@ -1,8 +1,10 @@
 package io.github.seniorzhai.architecturesample
 
+import android.arch.persistence.room.Room
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import io.github.seniorzhai.architecturesample.db.ZhihuDb
 import io.github.seniorzhai.architecturesample.network.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -14,16 +16,15 @@ import javax.inject.Singleton
 
 @Module
 class AppModule internal constructor(private val context: Context) {
-//
-//    @Provides
-//    @Singleton
-//    internal fun provideDb(): ZhihuDb {
-//        return Room.databaseBuilder(context, ZhihuDb::class.java!!, "zhihu.db").build();
-//    }
 
     @Provides
     @Singleton
-    internal fun provideApiService(): ApiService {
+    fun provideDb(): ZhihuDb =
+            Room.databaseBuilder(context, ZhihuDb::class.java, "zhihu.db").build()
+
+    @Provides
+    @Singleton
+    fun provideApiService(): ApiService {
         val retrofit = Retrofit.Builder()
                 .baseUrl(ENDPOINT)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

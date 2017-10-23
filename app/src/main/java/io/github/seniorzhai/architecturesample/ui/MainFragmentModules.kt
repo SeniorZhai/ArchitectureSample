@@ -14,8 +14,7 @@ class MainFragmentModules internal constructor(private val context: FragmentActi
 
     @Provides
     @ActivityScope
-    fun provideViewModel(): MainFragmentViewModel {
-        return ViewModelProviders.of(context).get(MainFragmentViewModel::class.java)
-    }
+    fun provideViewModel(): MainFragmentViewModel =
+            ViewModelProviders.of(context).get(MainFragmentViewModel::class.java)
 
 }

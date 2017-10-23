@@ -1,7 +1,6 @@
 package io.github.seniorzhai.architecturesample.ui
 
 import android.arch.lifecycle.Observer
-import android.arch.persistence.room.Room
 import android.os.Bundle
 import android.support.annotation.WorkerThread
 import android.support.v4.app.Fragment
@@ -26,11 +25,12 @@ import javax.inject.Inject
 
 class MainFragment : Fragment() {
 
-    //    @Inject
-    protected lateinit var zhihuDb: ZhihuDb
 
     @Inject
     protected lateinit var apiService: ApiService
+
+    @Inject
+    protected lateinit var zhihuDb: ZhihuDb
 
     @Inject
     protected lateinit var viewModel: MainFragmentViewModel
@@ -45,7 +45,6 @@ class MainFragment : Fragment() {
                 .mainFragmentModules(MainFragmentModules(activity))
                 .build()
                 .inject(this)
-        zhihuDb = Room.databaseBuilder(context, ZhihuDb::class.java!!, "zhihu.db").build()
         doWo()
     }
 

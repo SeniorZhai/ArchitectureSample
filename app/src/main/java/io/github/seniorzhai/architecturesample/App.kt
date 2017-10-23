@@ -15,9 +15,11 @@ class App : Application() {
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))
                 .build()
-        if (LeakCanary.isInAnalyzerProcess(this)) return
-        LeakCanary.install(this)
-        Stetho.initializeWithDefaults(this)
+        if (BuildConfig.DEBUG) {
+            if (LeakCanary.isInAnalyzerProcess(this)) return
+            LeakCanary.install(this)
+            Stetho.initializeWithDefaults(this)
+        }
     }
 
     companion object {
